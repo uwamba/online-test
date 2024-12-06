@@ -1,0 +1,37 @@
+{% extends 'exams/base.html' %}
+
+{% block title %}Test Details{% endblock %}
+
+{% block content %}
+<h2>{{ test.title }}</h2>
+<p><strong>Subject:</strong> {{ test.subject.name }} | <strong>Total Marks:</strong> {{ test.total_marks }}</p>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for question in questions %}
+    <div class="mb-3">
+        <h4>{{ question.text }}</h4>
+
+        {% if question.image %}
+        <img src="{{ question.image.url }}" alt="Question Image" class="img-fluid">
+        {% endif %}
+
+        {% if question.question_type == 'single' or question.question_type == 'multiple' %}
+            <!-- Display options for multiple-choice questions -->
+            {% for option in question.options.all %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="question_{{ question.id }}" id="option_{{ option.id }}" value="{{ option.id }}" {% if question.question_type == 'single' %} required {% endif %}>
+                <label class="form-check-label" for="option_{{ option.id }}">
+                    {{ option.text }}
+                </label>
+            </div>
+            {% endfor %}
+        {% elif question.question_type == 'text' %}
+            <!-- Display text area for text answer questions -->
+            <textarea class="form-control" name="question_{{ question.id }}" required></textarea>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
