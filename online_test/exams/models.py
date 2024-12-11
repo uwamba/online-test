@@ -31,7 +31,7 @@ class Question(models.Model):
         (TEXT_ANSWER, _('Text Answer')),
     ]
 
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE,related_name='questions')
     text = models.TextField()
     marks = models.IntegerField()
     question_type = models.CharField(
@@ -40,7 +40,7 @@ class Question(models.Model):
         default=SINGLE_ANSWER,
     )
     image = models.ImageField(upload_to='questions/', blank=True, null=True)
-
+    answer_text = models.TextField(null=True, blank=True)  # For storing text answers
     def __str__(self):
         return f"Question: {self.text[:50]}..."  # Truncate text for readability in the admin
 

@@ -8,14 +8,18 @@ from companies.models import Company
 class Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    date_of_birth = models.DateField(null=True)
+    phone_number = models.CharField(max_length=20,null=True)
+    full_name = models.CharField(max_length=100,null=True)
 
     def __str__(self):
         return self.user.username
 class Candidate(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    date_of_birth = models.DateField()
-    phone_number = models.CharField(max_length=20)
+    date_of_birth = models.DateField(null=True)
+    phone_number = models.CharField(max_length=20,null=True)
+    full_name = models.CharField(max_length=100,null=True)
 
     def __str__(self):
         return self.user.username
